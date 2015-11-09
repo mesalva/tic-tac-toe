@@ -1,0 +1,199 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Jogo da velha</title>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/functions/ObjectSize.js"></script>
+	<script type="text/javascript" src="js/Game.js"></script>
+	<script type="text/javascript" src="js/Player.js"></script>
+	<script type="text/javascript" src="js/Front.js"></script>
+	<script type="text/javascript" src="js/Messages.js"></script>
+	<script type="text/javascript" src="js/Sounds.js"></script>
+
+	<script type="text/javascript" src="players/PC.js"></script>
+	<script type="text/javascript" src="players/Eu.js"></script>
+
+	<link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css"/>
+</head>
+<body>
+
+<div class="winner-mask winner-mask-hidden" style="display:none;">
+	<h2>Ganhador:<br /><span class="winner-name">[X] Gui</span></h2>
+	<a href="./index.html">Recomeçar</a>
+</div>
+
+<div class="wrapper-all">
+	<div class="sound-volume"></div>
+	<div class="wrapper-left">
+	</div>
+	<div class="wrapper-center">
+		<div class="wrapper-header">
+			<div class="logo"></div>
+		</div>
+		<div class="wrapper-game">
+			<div class="player-box player-1">
+				<h2>
+					<strong id="player-x-name">%</strong>
+					<strong id="player-x-id">[X] </strong><br />
+					<span>Jogador 1</span>
+				</h2>
+				<div id="player-log-x" class="player-log"></div>
+			</div>
+			<div class="game-display">
+				<div class="game-console">
+					<div class="wrapper-items">
+						<div class="item-grid item-grid-x">
+							<div class="axis axis-x">
+								<div class="axis-item axis-x-item">0</div>
+								<div class="axis-item axis-x-item">1</div>
+								<div class="axis-item axis-x-item">2</div>
+							</div>
+						</div>
+						<div class="item-grid item-grid-y">
+							<div class="axis axis-y">
+								<div class="axis-item axis-y-item"><span>2</span></div>
+								<div class="axis-item axis-y-item"><span>1</span></div>
+								<div class="axis-item axis-y-item"><span>0</span></div>
+							</div>
+						</div>
+						<div class="item-row-1">
+							<div class="item item-col-1" id="item-1"><span class="item-piece item-piece-empty"></span></div>
+							<div class="item item-col-2" id="item-2"><span class="item-piece item-piece-empty"></span></div>
+							<div class="item item-col-3" id="item-3"><span class="item-piece item-piece-empty"></span></div>
+						</div>
+						<div class="item-row-2">
+							<div class="item item-col-1" id="item-4"><span class="item-piece item-piece-empty"></span></div>
+							<div class="item item-col-2" id="item-5"><span class="item-piece item-piece-empty"></span></div>
+							<div class="item item-col-3" id="item-6"><span class="item-piece item-piece-empty"></span></div>
+						</div>
+						<div class="item-row-3">
+							<div class="item item-col-1" id="item-7"><span class="item-piece item-piece-empty"></span></div>
+							<div class="item item-col-2" id="item-8"><span class="item-piece item-piece-empty"></span></div>
+							<div class="item item-col-3" id="item-9"><span class="item-piece item-piece-empty"></span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="player-box player-2">
+				<h2>
+					<strong id="player-o-id">[O] </strong>
+					<strong id="player-o-name">%</strong><br />
+					<span>Jogador 2</span>
+				</h2>
+				<div id="player-log-o" class="player-log"></div>
+			</div>
+		</div>
+		<div class="wrapper-footer"></div>
+	</div>
+	<div class="wrapper-right"></div>
+</div>
+
+<script type="text/javascript" src="js/Main.js"></script>
+<style type="text/css">
+	/* body */
+	* {-webkit-transition: all 1s ease;}
+	body {margin:0; font-family:"Open Sans", Arial;}
+	div.wrapper-all {background-color:#ED4343; display:flex;}
+
+	/* winner-mask */
+	div.winner-mask-hidden {opacity:0;}
+	div.winner-mask-hidden h2 {font-size:12px !important;}
+	div.winner-mask {background-color:rgba(0, 0, 0, 0.8); width:100%; height:100%; z-index:10; position:absolute; top:0; left:0;}
+	div.winner-mask h2 {color:#EEE; font-size:100px; text-shadow:6px 6px 0 #ED4343; text-align:center; margin-top:10%; margin-bottom:20px; }
+	div.winner-mask h2 span {color:#FFF; text-shadow:0 0 80px rgba(255, 255, 255, 1); text-align:center; -webkit-transition:none;}
+	div.winner-mask a {background-color:#FFF; color:#ED4343; font-size:40px; margin-top:0; padding:8px 0; width:300px; position:absolute; left:50%; margin-left:-150px; text-align:center;
+		border-radius:8px; font-weight:bold; text-decoration:none;}
+	div.winner-mask a:hover {background-color:#ED4343; color:#FFF;}
+
+	/* wrapper left */
+	div.wrapper-left {display:flex; flex:0; flex-direction:column; height:100%;}
+
+	/* wrapper center */
+	div.wrapper-center {display:flex; flex:6; flex-direction:column; height:100%;}
+
+	/* wrapper ranking */
+	div.wrapper-right {flex:0; padding:20px;}
+
+	/* wrapper header */
+	div.wrapper-center div.wrapper-header {display:flex; flex-direction:row;  height:200px; position:relative;}
+	div.wrapper-center div.wrapper-header div.logo {background:url(images/logo.png) center no-repeat; width:394px; height:150px; position:absolute; top:50px; left:50%; margin-left:-197px;
+		z-index:9;}
+
+	/* gamer wrapper */
+	div.wrapper-center div.wrapper-game {display:flex; flex-direction:row; flex:4;}
+
+	/* player-box */
+	div.wrapper-center div.wrapper-game div.player-box {}
+	div.wrapper-center div.wrapper-game div.player-box h2 {color:#EEE; font-size:42px; line-height:36px; padding-top:0px; margin:0px; margin-top:25px;}
+	div.wrapper-center div.wrapper-game div.player-box h2 span {color:rgba(255, 255, 255, 0.7); font-size:18px; margin:0;}
+
+	/* game display & players sides */
+	div.wrapper-center div.wrapper-game div.player-box.player-1 {flex:1; text-align:right;}
+	div.wrapper-center div.wrapper-game div.game-display {flex:3; overflow:hidden; display:flex; position:relative;}
+	div.wrapper-center div.wrapper-game div.player-box.player-2 {flex:1; text-align:left;}
+
+	/* game console & items */
+	div.wrapper-center div.wrapper-game div.game-display div.game-console {background-color:#EEE;  width:100%; margin:20px; display:flex;
+		border-radius:10px; box-shadow:0 0 20px rgba(0, 0, 0, 0.2);}
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items {display:flex; margin:50px 100px 100px 100px; width:100%; font-size:60px; position:relative;}
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items div.item {text-align:center; justify-content:center; display:flex;}
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items div.item.item-clickable {-webkit-transition: all 0.2s ease; box-shadow:inset 0 0 80px 30px #EEE; background-color:rgba(0, 255, 0, 0.1); cursor:pointer;}
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items div.item.item-clickable:hover {background-color:rgba(0, 255, 0, 0.3);}
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items div.item-row-1 {flex:1; display:flex; flex-direction:column; border-right:solid 1px #FFF;}
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items div.item-row-2 {flex:1; display:flex; flex-direction:column; border-left:dashed 1px #999; border-right:solid 1px #FFF;}
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items div.item-row-3 {flex:1; display:flex; flex-direction:column; border-left:dashed 1px #999;}
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items div.item-col-1 {flex:1; display:flex; flex-direction:column; border-bottom:solid 1px #FFF;}
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items div.item-col-2 {flex:1; display:flex; flex-direction:column; border-top:dashed 1px #999; border-bottom:solid 1px #FFF;}
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items div.item-col-3 {flex:1; display:flex; flex-direction:column; border-top:dashed 1px #999;}
+
+	/* items grid */
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items div.item-grid {position:absolute; bottom:0; left:0; font-size:30px; color:#CCC;}
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items div.item-grid-x {width:100%; height:40px; bottom:-40px;}
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items div.item-grid-y {height:100%; width:40px; left:-40px;}
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items div.item-grid div.axis-x {width:100%; height:40px; position:absolute;}
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items div.item-grid div.axis-y {width:40px; height:100%; position:absolute;}
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items div.item-grid div.axis {text-align:center; display:flex;}
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items div.item-grid div.axis div.axis-item {flex:1;}
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items div.item-grid div.axis-y {flex-direction:column;}
+	div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items div.item-grid div.axis-y-item {align-content:center; justify-content:center; display:flex; align-items:center;}
+
+	/* items images */
+	span.item-piece {background-color:#ED4343; width:100px; height:100px; margin:auto; display:block; color:rgba(255, 255, 255, 0.7); text-shadow:none; font-size:80px; line-height:84px;
+		font-family:"Open Sans", Arial; font-weight:bold;
+		box-shadow:0 0 10px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.8), inset 0 0 20px rgba(255, 255, 255, 1);}
+	span.item-piece-empty {background-color:transparent; box-shadow:none;}
+	span.item-piece-error {-webkit-transition: all 0.2s ease; background-color:#F00; font-size:90px; line-height:84px;
+		box-shadow:0 0 20px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.8), inset 0 0 20px rgba(255, 255, 255, 1);}
+	span.item-piece-success {background-color: #46e646; color: #96ff87;}
+	span.item-piece-o {border-radius:50%;}
+	span.item-piece-x {border-radius:20px;}
+	span.item-piece-o:after {content:'o';}
+	span.item-piece-x:after {content:'x';}
+
+	/* player logs */
+	div.wrapper-center div.wrapper-game div.player-log {color:rgba(0, 0, 0, 0.3); margin-top:20px; font-family: 'Courier New' , Monospace; font-size:22px;}
+	div.wrapper-center div.wrapper-game div.player-log span {background-color:rgba(255, 255, 255, 0.1); display:block; font-weight:bold; line-height:40px; padding:4px; margin:2px;}
+
+	/* ranking */
+	div.wrapper-right div.ranking {width:100%;}
+	div.wrapper-right div.ranking div.ranking-item {background-color:rgba(0, 0, 0, 0.1); color:#DDD; line-height:80px; font-weight:bold; height:80px; display:flex; padding:0 20px; margin-bottom:20px;
+		border-radius:10px;}
+	div.wrapper-right div.ranking div.ranking-item span.ranking-item-place {font-size:40px; padding-right:20px;}
+	div.wrapper-right div.ranking div.ranking-item span.ranking-item-avatar {background-color:rgba(0, 0, 0, 0.1); width:60px; height:60px; margin-top:10px; border-radius:10px;}
+	div.wrapper-right div.ranking div.ranking-item span.ranking-item-name {font-size:20px; padding-left:10px;}
+
+	/* sounds */
+	div.sound-volume {font-family:FontAwesome; color:rgba(0, 0, 0, 0.4); font-size:24px; display:block; position:absolute; top:10px; left:10px; cursor:pointer;}
+	div.sound-volume:before {content:'\f028'; width:10px; height:10px;}
+	div.sound-volume.sound-volume-off:before {content:'\f026' !important;}
+
+
+	@media screen and (min-height:800px) {
+	}
+	@media screen and (max-height:900px) {
+		span.item-piece {width:50px; height:50px; font-size:40px; line-height:40px;}
+		div.wrapper-center div.wrapper-game div.game-display div.game-console div.wrapper-items {margin:100px 50px 50px 50px;}
+	}
+</style>
+</body>
+</html>
