@@ -6,7 +6,7 @@ function Game(jQuery, Front, Messages) {
 	this.config = {
 		ended:				false,
 		max_players:		2,
-		round_delay:		500,
+		round_delay:		50,
 		round_interval: 	null,
 		round_count:		0,
 		round_turns:		['x', 'o'],
@@ -222,13 +222,14 @@ Game.prototype.start = function(conf) {
 Game.prototype.runCustom = function(conf) {
 	var self = this;
 
-	this.play(4);
-	this.play(2);
 	this.play(1);
-	this.play(5);
+	this.play(4);
 	this.play(8);
 	this.play(7);
-	this.play(window['Eu'](self.getArrayXY(), self.getTurn(), self.config.game_pattern));
+	this.play(9);
+	this.play(5);
+	//this.play(6);
+	this.play(window['GuilhermePiccoli'](self.getArrayXY(), self.getTurn(), self.config.game_pattern));
 };
 
 Game.prototype.runGame = function(conf) {
