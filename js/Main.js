@@ -9,10 +9,10 @@ Game.setPlayer(new Player({
 }));
 Game.setPlayer(new Player({
 	id: 			'o',
-	name: 			'PC'
+	name: 			'GuilhermePiccoli'
 }));
 
 // 'custom', 'manual', 'normal'
-Game.start({manual_input: 'manual'});
+Game.start({manual_input: 'normal'});
 
 
