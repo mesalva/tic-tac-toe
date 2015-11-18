@@ -228,14 +228,14 @@ Game.prototype.runCustom = function(conf) {
 	this.play(5);
 	this.play(8);
 	this.play(7);
-	this.play(window['Eu'](self.getArrayXY(), self.config.game_pattern, self.getTurn()));
+	this.play(window['Eu'](self.getArrayXY(), self.getTurn(), self.config.game_pattern));
 };
 
 Game.prototype.runGame = function(conf) {
 	var self = this;
 	this.setRoundInterval(setInterval(function() {
 		var player = self.player[self.getTurn()];
-		var move = window[player.name](self.getArrayXY(), self.getTurn());
+		var move = window[player.name](self.getArrayXY(), self.getTurn(), self.config.game_pattern);
 		self.play(move);
 	}, self.getConfig().round_delay));
 };
@@ -252,7 +252,7 @@ Game.prototype.tryToPlayXOnManualInputMode = function(self) {
 			return false;
 		}
 		var player = self.player[self.getTurn()];
-		var move = window[player.name](self.getArrayXY(), self.config.game_pattern, self.getTurn());
+		var move = window[player.name](self.getArrayXY(), self.getTurn(), self.config.game_pattern);
 		self.config.manual_input_turn = true;
 		self.play(move);
 		self.jquery('div.item').find('span:not(.item-piece-o, .item-piece-x)').parent().addClass('item-clickable');
